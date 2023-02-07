@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercise Tracker</title>
+    <style>
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+        h1 {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        label {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+input[type="radio"] {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+        
+  
+        button {
+          padding: 10px 20px;
+          background-color: lightblue;
+          border: none;
+          border-radius: 5px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+  
+        #exercise-list {
+          list-style: none;
+          padding: 0;
+          margin-top: 20px;
+        }
+  
+        .exercise-item {
+          padding: 10px;
+          background-color: lightgray;
+          margin-bottom: 10px;
+          border-radius: 5px;
+        }
+        
+      </style>
+      
+  </head>
+  <body>
+    <h1>Exercise Tracker</h1>
+
+    <label for="exercise-type">Select an Exercise:</label><br>
+    <input type="radio" id="sit-ups" name="exercise-type" value="Sit-Ups">
+    <label for="sit-ups">Sit-Ups</label><br>
+    <input type="radio" id="push-ups" name="exercise-type" value="Push-Ups">
+    <label for="push-ups">Push-Ups</label><br>
+    <input type="radio" id="jump-rope" name="exercise-type" value="Jump Rope">
+    <label for="jump-rope">Jump Rope</label><br><br>
+
+    <label for="duration">Duration (in minutes):</label><br>
+    <input type="text" id="duration" name="duration"><br><br>
+
+    <button id="add-exercise">Add Exercise</button>
+
+    <h2>Exercise List:</h2>
+    <ul id="exercise-list"></ul>
+
+
+    <script>
+        const exerciseList = [];
+      
+        class Exercise {
+          constructor(type, duration) {
+            this.type = type;
+            this.duration = duration;
+            this.calories = 0;
+            switch (this.type) {
+              case "Sit-Ups":
+                this.calories = this.duration * 10;
+                break;
+              case "Push-Ups":
+                this.calories = this.duration * 15;
+                break;
+              case "Jump Rope":
+                this.calories = this.duration * 18;
+                break;
+            }
+          }
+        }
+      
+        document.getElementById("add-exercise").addEventListener("click", function () {
+          const typeInput = document.querySelector('input[name="exercise-type"]:checked');
+          if (!typeInput) {
+            alert("Please select an exercise type.");
+            return;
+          }
+          const type = typeInput.value;
+      
+          const durationInput = document.getElementById("duration");
+          let duration;
+          if (durationInput) {
+            duration = parseInt(durationInput.value);
+          }
+      
+          if (!duration || duration <= 0) {
+            alert("Please enter a valid duration.");
+            return;
+          }
+      
+          const exercise = new Exercise(type, duration);
+          exerciseList.push(exercise);
+      
+          const listItem = document.createElement("li");
+          listItem.classList.add("exercise-item");
+          listItem.innerHTML = `${exercise.type} - ${exercise.duration} minutes - ${exercise.calories} calories`;
+      
+          document.getElementById("exercise-list").appendChild(listItem);
+        });
+      </script>
+  </body>
+</html>
